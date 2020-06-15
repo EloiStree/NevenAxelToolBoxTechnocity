@@ -1,0 +1,10 @@
+{
+	"name": "be.nevenaxel.testutility",
+	"displayName": "testUtility",
+	"version": "0.0.1",
+	"unity": "2018.1",
+	"description": "You package description",
+	"keywords": [ "Script"],
+	"category": "Script",
+	"dependencies": {}
+}
