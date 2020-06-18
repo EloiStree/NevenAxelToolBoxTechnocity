@@ -3,15 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class LookingAtSomething : MonoBehaviour
+public class IsObserved : MonoBehaviour
 {
     [SerializeField]
-    Transform m_head;
+    Transform m_objectObserved;
     [SerializeField]
-    Transform m_target;
+    bool m_showDebugRay;
+    [SerializeField]
+    public Transform m_head;
+    
 
+    [Tooltip("Precision range in degrees")]
     [SerializeField]
-    float m_precisionRange;
+    float m_precisionRange = 45;
     [SerializeField]
     LayerMask m_layerRestriction;
 
@@ -22,7 +26,7 @@ public class LookingAtSomething : MonoBehaviour
     UnityEvent StoppedLooking;
 
     [SerializeField]
-    float m_lookDuration;
+    float m_lookDuration = 5;
 
     [SerializeField]
     UnityEvent LookedForDuration;
@@ -35,25 +39,27 @@ public class LookingAtSomething : MonoBehaviour
     Quaternion localQuaternionOfObject;
     float angle;
 
-    // check if the object is behind a wall and if not it will not trigger
+    private void Reset()
+    {
+        m_objectObserved = transform;
+    }
 
     private void Update()
     {
-        objectDirection = m_target.position - m_head.position;
+        objectDirection = m_objectObserved.position - m_head.position;
         localQuaternionOfObject = Quaternion.LookRotation(objectDirection, m_head.up);
         float angle = Quaternion.Angle(m_head.rotation, localQuaternionOfObject);
 
+        if(m_showDebugRay)
+            Debug.DrawRay(m_head.position, m_head.forward * 10, Color.red);
 
-        Debug.DrawRay(m_head.position, m_head.forward, Color.red);
         RaycastHit hit;
-
-        if (angle < m_precisionRange && Physics.Raycast(m_head.position, objectDirection, out hit, Mathf.Infinity, m_layerRestriction) && hit.collider.gameObject == m_target.gameObject)
+        Physics.Raycast(m_head.position, objectDirection, out hit, Mathf.Infinity, m_layerRestriction);
+        if (angle < m_precisionRange && (!Physics.Raycast(m_head.position, objectDirection, out hit, Mathf.Infinity, m_layerRestriction)|| hit.collider.gameObject == m_objectObserved.gameObject))
         {
             if (!m_isHitting)
             {
                 StartedLooking.Invoke();
-                // should I keep the debug or not ?
-                Debug.Log("Started Looking");
             }
             m_isHitting = true;
 
@@ -63,16 +69,15 @@ public class LookingAtSomething : MonoBehaviour
             {
                 m_hasLookedForDuration = true;
                 LookedForDuration.Invoke();
-                Debug.Log("Looked for a certain amount of time");
             }
         }
         else
         {
-            Debug.DrawRay(m_head.position, m_head.forward, Color.white);
+            if (m_showDebugRay)
+                Debug.DrawRay(m_head.position, m_head.forward * 10, Color.white);
             if (m_isHitting)
             {
                 StoppedLooking.Invoke();
-                Debug.Log("StoppedLooking");
             }
 
             m_currentlookDuration = 0;

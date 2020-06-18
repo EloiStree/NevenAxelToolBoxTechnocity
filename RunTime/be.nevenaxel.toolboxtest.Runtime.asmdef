@@ -1,3 +1,15 @@
-﻿{
-	"name": "be.nevenaxel.toolboxtest.Runtime"
+{
+    "name": "be.nevenaxel.toolboxtest.Runtime",
+    "references": [
+        "GUID:709ae95cc8eca1544bceddaff2b099b0"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

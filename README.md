@@ -1,5 +1,6 @@
 # NevenAxelToolBoxTechnocity
 
-Le script LookAtSomething peut se placer sur n'importe quel objet, l'objet a regarder ou même dans un manager d'objets a regarder.
-Le transform head doit être un gameobject sans collider pour pouvoir y faire partir un raycast (ecran noir d'Alex panda).
-Ne pas oublier de set le layerRestriction (en everything c'est l'idéal pour que n'importe quel objet avec un collider puisse bloquer la vision de l'objet).
+Le script SetIsObservedWithRealityTag permet d'automatiquement aller chercher la tete avec le realityTag au lieu de le set manuellement.
+La variable precision range est exprimée en degree.
+
+NE PAS OUBLIER DE SET LE LAYER RESTRICTION POUR QU'IL NE TOUCHE PAS LES COLLIDER DU CASQUE/TETE
