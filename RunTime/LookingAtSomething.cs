@@ -35,10 +35,7 @@ public class LookingAtSomething : MonoBehaviour
     Quaternion localQuaternionOfObject;
     float angle;
 
-    private void Start()
-    {
-        
-    }
+    // check if the object is behind a wall and if not it will not trigger
 
     private void Update()
     {
@@ -47,13 +44,15 @@ public class LookingAtSomething : MonoBehaviour
         float angle = Quaternion.Angle(m_head.rotation, localQuaternionOfObject);
 
 
-        Debug.DrawRay(m_head.position, m_head.forward);
+        Debug.DrawRay(m_head.position, m_head.forward, Color.red);
+        RaycastHit hit;
 
-        if (angle < m_precisionRange)
+        if (angle < m_precisionRange && Physics.Raycast(m_head.position, objectDirection, out hit, Mathf.Infinity, m_layerRestriction) && hit.collider.gameObject == m_target.gameObject)
         {
             if (!m_isHitting)
             {
                 StartedLooking.Invoke();
+                // should I keep the debug or not ?
                 Debug.Log("Started Looking");
             }
             m_isHitting = true;
@@ -69,6 +68,7 @@ public class LookingAtSomething : MonoBehaviour
         }
         else
         {
+            Debug.DrawRay(m_head.position, m_head.forward, Color.white);
             if (m_isHitting)
             {
                 StoppedLooking.Invoke();
